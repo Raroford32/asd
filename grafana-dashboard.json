@@ -1,0 +1,115 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "RDP Stress Test Dashboard",
+    "tags": [],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "5s",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "RDP Login Attempts",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(rdp_login_attempts_total[1m]))",
+            "legendFormat": "Login Attempts",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Successful Logins",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(rdp_successful_logins_total[1m]))",
+            "legendFormat": "Successful Logins",
+            "refId": "B"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Failed Logins",
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(rdp_failed_logins_total[1m]))",
+            "legendFormat": "Failed Logins",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Consumer Node CPU Usage",
+        "gridPos": {
+          "x": 12,
+          "y": 8,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "avg(rate(node_cpu_seconds_total{mode='system'}[1m])) by (instance)",
+            "legendFormat": "{{instance}}",
+            "refId": "D"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Consumer Node Memory Usage",
+        "gridPos": {
+          "x": 0,
+          "y": 16,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "avg(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) by (instance)",
+            "legendFormat": "{{instance}}",
+            "refId": "E"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Kafka Message Rate",
+        "gridPos": {
+          "x": 12,
+          "y": 16,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(kafka_server_brokertopicmetrics_messagesin_total[1m]))",
+            "legendFormat": "Messages In",
+            "refId": "F"
+          }
+        ]
+      }
+    ]
+  }
+}
