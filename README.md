@@ -56,6 +56,48 @@ Use a database like PostgreSQL or a distributed storage system like Apache Cassa
 3. Run the consumer nodes to consume tasks from Kafka topics and perform RDP login attempts.
 4. Monitor the performance and health of the system using Prometheus and Grafana.
 
+## Security Configuration
+
+### Kafka SSL Configuration
+To enable SSL for Kafka, you need to configure the following environment variables in your `docker-compose.yml` file:
+
+- `KAFKA_SSL_KEYSTORE_LOCATION`: Path to the Kafka keystore file.
+- `KAFKA_SSL_KEYSTORE_PASSWORD`: Password for the Kafka keystore.
+- `KAFKA_SSL_TRUSTSTORE_LOCATION`: Path to the Kafka truststore file.
+- `KAFKA_SSL_TRUSTSTORE_PASSWORD`: Password for the Kafka truststore.
+
+Example configuration:
+```yaml
+kafka:
+  environment:
+    KAFKA_SSL_KEYSTORE_LOCATION: /path/to/keystore.jks
+    KAFKA_SSL_KEYSTORE_PASSWORD: your_keystore_password
+    KAFKA_SSL_TRUSTSTORE_LOCATION: /path/to/truststore.jks
+    KAFKA_SSL_TRUSTSTORE_PASSWORD: your_truststore_password
+```
+
+### PostgreSQL SSL Configuration
+To enable SSL for PostgreSQL, you need to configure the following environment variables in your `docker-compose.yml` file:
+
+- `POSTGRES_SSLMODE`: SSL mode for PostgreSQL (e.g., `require`).
+- `POSTGRES_SSLROOTCERT`: Path to the PostgreSQL root certificate.
+
+Example configuration:
+```yaml
+db:
+  environment:
+    POSTGRES_SSLMODE: require
+    POSTGRES_SSLROOTCERT: /path/to/root.crt
+```
+
+## Error Handling and Retry Mechanisms
+
+### Consumer Node
+The consumer node includes error handling and retry mechanisms for failed tasks. If a task fails, the system will retry the task up to a maximum number of retries with a delay between each retry.
+
+### Producer Node
+The producer node includes error handling and retry mechanisms for failed task production. If a task production fails, the system will retry the task production up to a maximum number of retries with a delay between each retry.
+
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request.
 

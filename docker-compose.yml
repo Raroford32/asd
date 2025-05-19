@@ -8,6 +8,10 @@ services:
     environment:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_SSL_KEYSTORE_LOCATION: /path/to/keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: your_keystore_password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /path/to/truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: your_truststore_password
     depends_on:
       - zookeeper
 
@@ -22,6 +26,10 @@ services:
       - kafka
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_SSL_KEYSTORE_LOCATION: /path/to/keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: your_keystore_password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /path/to/truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: your_truststore_password
 
   consumer:
     build: ./consumer
@@ -34,6 +42,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: secret
       DB_NAME: rdp_results
+      KAFKA_SSL_KEYSTORE_LOCATION: /path/to/keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: your_keystore_password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /path/to/truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: your_truststore_password
 
   db:
     image: postgres:latest
@@ -41,6 +53,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: rdp_results
+      POSTGRES_SSLMODE: require
+      POSTGRES_SSLROOTCERT: /path/to/root.crt
     ports:
       - "5432:5432"
     volumes:

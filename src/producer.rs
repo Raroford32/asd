@@ -24,6 +24,11 @@ async fn produce_task(producer: &FutureProducer, topic: &str, task: Task) -> Res
 async fn main() {
     let producer: FutureProducer = ClientConfig::new()
         .set("bootstrap.servers", "localhost:9092")
+        .set("security.protocol", "SSL")
+        .set("ssl.keystore.location", "/path/to/keystore.jks")
+        .set("ssl.keystore.password", "your_keystore_password")
+        .set("ssl.truststore.location", "/path/to/truststore.jks")
+        .set("ssl.truststore.password", "your_truststore_password")
         .create()
         .expect("Producer creation error");
 
@@ -35,6 +40,24 @@ async fn main() {
 
     match produce_task(&producer, "rdp_tasks", task).await {
         Ok(_) => println!("Task produced successfully"),
-        Err(e) => eprintln!("Failed to produce task: {}", e),
+        Err(e) => {
+            eprintln!("Failed to produce task: {}", e);
+            // Retry mechanism
+            let mut retry_count = 0;
+            let max_retries = 3;
+            while retry_count < max_retries {
+                match produce_task(&producer, "rdp_tasks", task.clone()).await {
+                    Ok(_) => {
+                        println!("Task produced successfully after retry");
+                        break;
+                    }
+                    Err(e) => {
+                        eprintln!("Retry {}/{} failed: {}", retry_count + 1, max_retries, e);
+                        retry_count += 1;
+                        tokio::time::sleep(Duration::from_secs(5)).await;
+                    }
+                }
+            }
+        }
     }
 }

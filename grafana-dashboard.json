@@ -109,6 +109,40 @@
             "refId": "F"
           }
         ]
+      },
+      {
+        "type": "graph",
+        "title": "Kafka SSL Metrics",
+        "gridPos": {
+          "x": 0,
+          "y": 24,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(kafka_ssl_handshake_total[1m]))",
+            "legendFormat": "SSL Handshakes",
+            "refId": "G"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "PostgreSQL SSL Metrics",
+        "gridPos": {
+          "x": 12,
+          "y": 24,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(postgresql_ssl_handshake_total[1m]))",
+            "legendFormat": "SSL Handshakes",
+            "refId": "H"
+          }
+        ]
       }
     ]
   }
